@@ -1,5 +1,10 @@
 package tcl_analyzer;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,7 +12,122 @@ import java.util.Set;
 
 public class TCL_Analyzer {
 
-    Set<String> tokenWords = new HashSet<String>() {{
+    private static final int DESCONOCIDO = -1,
+                             NO_NUMERO = 0,
+                             ID = 1,
+                             PALABRA_R = 2,
+                             SIMBOLO_R = 3,
+                             ENTERO = 4,
+                             DOUBLE = 5,
+                             STRING = 6,
+                             CSYMBOL = 7,
+                             CNSYMBOL = 8;
+    
+    private static final Set<Character> ALONE_SYMBOL = new HashSet<Character>() {{
+        add('{');
+        add('}');
+        add('$');
+        add(';');
+        add('[');
+        add(']');
+        add('(');
+        add(')');
+        add('+');
+        add('-');
+        add('/');
+        add('%');
+    }};
+    
+    private static final Set<Character> CAN_ALONE_SYMBOL = new HashSet<Character>() {{
+        add('<');
+        add('>');
+        add('!');
+        add('*');
+    }};
+    
+    private static final Set<Character> NEED_U_SYMBOL = new HashSet<Character>() {{
+        add('=');
+        add('|');
+        add('&');
+    }};
+    
+    private static final Set<Character> ALPHABET = new HashSet<Character>() {{
+        add('{');
+        add('}');
+        add('$');
+        add(';');
+        add('.');
+        add('[');
+        add(']');
+        add('(');
+        add(')');
+        add('>');
+        add('<');
+        add('!');
+        add('=');
+        add('&');
+        add('|');
+        add('+');
+        add('-');
+        add('*');
+        add('/');
+        add('"');
+        add('_');
+        add('%');
+        add('A');
+        add('B');
+        add('C');
+        add('D');
+        add('E');
+        add('F');
+        add('G');
+        add('H');
+        add('I');
+        add('J');
+        add('K');
+        add('L');
+        add('M');
+        add('N');
+        add('O');
+        add('P');
+        add('Q');
+        add('R');
+        add('S');
+        add('T');
+        add('U');
+        add('V');
+        add('W');
+        add('X');
+        add('Y');
+        add('a');
+        add('b');
+        add('c');
+        add('d');
+        add('e');
+        add('f');
+        add('g');
+        add('h');
+        add('i');
+        add('j');
+        add('k');
+        add('l');
+        add('m');
+        add('n');
+        add('o');
+        add('p');
+        add('q');
+        add('r');
+        add('s');
+        add('t');
+        add('u');
+        add('v');
+        add('w');
+        add('x');
+        add('y');
+        add('z');
+    }};
+    
+    private static final Set<String> RESERVED_WORDS = new HashSet<String>() {{
         add("Tcl");
         add("after");
         add("append");
@@ -175,7 +295,7 @@ public class TCL_Analyzer {
         add("zlib");
     }};
     
-    Map<String, String> tokenSymbol = new HashMap<String, String>() {{
+    private static final Map<String, String> RESERVED_SYMBOLS = new HashMap<String, String>() {{
         put("{" , "token_llave_izq");
         put("}" , "token_llave_der");
         put("$" , "token_dollar");
@@ -203,7 +323,32 @@ public class TCL_Analyzer {
         put("**" , "token_pot");
     }};
     
-    public static void main(String[] args) {
-    }
+    private static int estadoLexema = DESCONOCIDO;
+    private static String lexema;
     
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        BufferedReader br;
+        try  {
+            br = new BufferedReader(new FileReader("resources/in.txt"));
+        } catch (FileNotFoundException e) {
+            br = new BufferedReader(new InputStreamReader(System.in));
+        }
+        String line;
+        char caracter;
+        while((line=br.readLine())!=null){
+            for (int i = 0; i < line.length() ; i++){
+                lexema = "";
+                while (i < line.length() && validar(caracter = line.charAt(i++)))
+                    lexema += caracter;
+                switch (estadoLexema) {
+                }
+                System.out.println("<>");
+                i--;
+            }
+        }
+    }    
+    
+    private static boolean validar(char charAt) {
+        return true;
+    }
 }
