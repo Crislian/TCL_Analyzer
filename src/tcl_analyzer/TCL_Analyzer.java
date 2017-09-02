@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class TCL_Analyzer {
 
-    Set<String> tokenWords = new HashSet<String>() {{
+    HashSet<String> tokenWords = new HashSet<String>() {{
         add("Tcl");
         add("after");
         add("append");
@@ -174,7 +174,6 @@ public class TCL_Analyzer {
         add("yieldto");
         add("zlib");
     }};
-    
     Map<String, String> tokenSymbol = new HashMap<String, String>() {{
         put("{" , "token_llave_izq");
         put("}" , "token_llave_der");
@@ -203,7 +202,50 @@ public class TCL_Analyzer {
         put("**" , "token_pot");
     }};
     
+    String lexema;
+    int estadoLexema = -1;
     public static void main(String[] args) {
+        
+        
+        
     }
-    
+    public static boolean clasificar(char next){
+        boolean flag = true;
+        switch(estadoLexema){
+            case DESCONOCIDO:
+                if(Character.isDigit(next))             estadoLexema = ENTERO;
+                else if(Character.isAlphabetic(next) 
+                        && ALPHABET.contains(next))     estadoLexema = PALABRA;
+                else if(next == '\"')                   estadoLexema = STRING;
+                else if(next == '_')                    estadoLexema = ID;
+                else if(CAN_ALONE_SYMBOL.contains(next))estadoLexema = CSYMBOL;
+                else if(NEED_U_SYMBOL.contains(next))   estadoLexema = CNSYMBOL;
+                else flag = false;
+                break;
+            case PALABRA:
+                if(Character.isDigit(next))             estadoLexema = ID;
+                else if(!Character.isAlphabetic(next)
+                        && !char == '_')                flag = false;                
+                break;
+            case ID:
+                if(!Character.isDigit(next)
+                        && !Character.isAlphabetic(next)
+                        && !char == '_')                flag = false;                
+                break;
+            case ENTERO: // AGREGAR LA OPCION DE 1e+012
+                if(next == '.')                         estadoLexema = DOUBLE;
+                else if(!Character.isDigit(next))       flag = false;
+                break;
+            case DOUBLE:
+                if(!Character.isDigit(next))            flag = false;
+                break;
+            case STRING:
+                if(next == '\"')                        estadoLexema = FIN_STRING;
+                break;
+            case FIN_STRING:
+                flag = false;
+                break;
+        }
+        return flag;
+    }
 }
