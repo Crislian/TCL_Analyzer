@@ -10,13 +10,13 @@ import java.util.LinkedList;
 
 public class Utils {
     public static void main(String[] args) throws IOException {
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        String str;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str;
 //        LinkedList ll = new LinkedList();
-//        while((str=br.readLine()) != null && str.length() != 0){
-//            for ( int i = 0 ; i < str.length() ; i++ ){
+        while((str=br.readLine()) != null && str.length() != 0)
+            for ( int i = 0 ; i < str.length() ; i++ )
 //                System.out.println("add(\'" + str.charAt(i) + "\');");
-//                System.out.println(str.charAt(i) + " alpha " + Character.isAlphabetic(str.charAt(i)));
+                System.out.println(str.charAt(i) + " alpha " + Character.isAlphabetic(str.charAt(i)));
 //            }
 //        }
 //        for ( int i = 65 ; i <= 89 ; i++) {
@@ -27,9 +27,7 @@ public class Utils {
 //        }
         tokenWordsGen();
     }
-    
-    
-    
+
     public static void tokenWordsGen() throws FileNotFoundException, IOException {
         BufferedReader br = new BufferedReader(new FileReader("resources/tokenWords.txt"));
         LinkedList ll = new LinkedList();
