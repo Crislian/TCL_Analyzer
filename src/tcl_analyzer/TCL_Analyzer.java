@@ -12,18 +12,17 @@ import java.util.Set;
 
 public class TCL_Analyzer {
 
-    private static boolean ERROR;
+    private static boolean ERROR, devolver;
     private static final int DESCONOCIDO = -1,
                              PALABRA = 0,
                              ID = 1,
-                             SIMBOLO_R = 2,
-                             ENTERO = 3,
-                             DOUBLE = 4,
-                             STRING = 5,
-                             CSYMBOL = 6,
-                             CNSYMBOL = 7,
-                             ASYMBOL = 8,
-                             FIN_STRING = 9;
+                             ENTERO = 2,
+                             DOUBLE = 3,
+                             CSYMBOL = 4,
+                             CNSYMBOL = 5,
+                             ASYMBOL = 6,
+                             FIN_STRING = 7,
+                             FIN_SYMBOL = 8;
     
     private static final Set<Character> ALONE_SYMBOL = new HashSet<Character>() {{
         add('{');
@@ -39,20 +38,84 @@ public class TCL_Analyzer {
         add('/');
         add('%');
     }};
-    
     private static final Set<Character> CAN_ALONE_SYMBOL = new HashSet<Character>() {{
         add('<');
         add('>');
         add('!');
         add('*');
-    }};
-    
+    }};    
     private static final Set<Character> NEED_U_SYMBOL = new HashSet<Character>() {{
         add('=');
         add('|');
         add('&');
     }};
     
+    private static final Set<Character> LETTERS = new HashSet<Character>() {{
+        add('%');
+        add('A');
+        add('B');
+        add('C');
+        add('D');
+        add('E');
+        add('F');
+        add('G');
+        add('H');
+        add('I');
+        add('J');
+        add('K');
+        add('L');
+        add('M');
+        add('N');
+        add('O');
+        add('P');
+        add('Q');
+        add('R');
+        add('S');
+        add('T');
+        add('U');
+        add('V');
+        add('W');
+        add('X');
+        add('Y');
+        add('a');
+        add('b');
+        add('c');
+        add('d');
+        add('e');
+        add('f');
+        add('g');
+        add('h');
+        add('i');
+        add('j');
+        add('k');
+        add('l');
+        add('m');
+        add('n');
+        add('o');
+        add('p');
+        add('q');
+        add('r');
+        add('s');
+        add('t');
+        add('u');
+        add('v');
+        add('w');
+        add('x');
+        add('y');
+        add('z');
+    }};
+    private static final Set<Character> DIGITS = new HashSet<Character>() {{
+        add('1');
+        add('2');
+        add('3');
+        add('4');
+        add('5');
+        add('6');
+        add('7');
+        add('8');
+        add('9');
+        add('0');
+    }};
     private static final Set<Character> ALPHABET = new HashSet<Character>() {{
         add('#');
         add('{');
@@ -128,6 +191,16 @@ public class TCL_Analyzer {
         add('x');
         add('y');
         add('z');
+        add('1');
+        add('2');
+        add('3');
+        add('4');
+        add('5');
+        add('6');
+        add('7');
+        add('8');
+        add('9');
+        add('0');
     }};
     
     private static final Set<String> RESERVED_WORDS = new HashSet<String>() {{
@@ -290,14 +363,12 @@ public class TCL_Analyzer {
         add("update");
         add("uplevel");
         add("upvar");
-        add("variable");
         add("vwait");
         add("while");
         add("yield");
         add("yieldto");
         add("zlib");
     }};
-
     private static final Map<String, String> RESERVED_SYMBOLS = new HashMap<String, String>() {{
         put("{" , "token_llave_izq");
         put("}" , "token_llave_der");
@@ -332,56 +403,97 @@ public class TCL_Analyzer {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
         try  {
-            br = new BufferedReader(new FileReader("resources/in.txt"));
+            br = new BufferedReader(new FileReader("resources/IO/in0.txt"));
         } catch (FileNotFoundException e) {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
-        String line, output;
+        String line;
         char caracter;
         for(int f = 0; (line=br.readLine())!=null; f++){
             for (int c = 0; c < line.length() && !ERROR; c++){
                 int cnt = c;
-                output = "<";
+                StringBuilder output = new StringBuilder("<");
                 lexema = "";
                 ERROR = false;
+                devolver = false;
                 estadoLexema = DESCONOCIDO;
                 caracter = line.charAt(c);
                 if (caracter == ' ' || caracter == '\t' || caracter == '\n')    //Ignorar espacio/tab/salto 
                     continue;
-                if(!ALPHABET.contains(caracter) || caracter == '.')    ERROR = true;               //Error porque no existe en el alfabeto
-                else {
-                    if(caracter == '#')    break;                               //Comentario
-                    if (caracter == '\"'){                                          //Lectura String
-                        while(line != null && (caracter = line.charAt(++c)) != '\"'){
-                            lexema += caracter;
-                            if(c+1 == line.length()){
-                                line = br.readLine();
-                                f++;
-                                c = -1;
-                            }
+                else if(caracter == '#') break;    // Comentario, se ignora el resto de la linea            
+                else if(caracter == '.' || !ALPHABET.contains(caracter)) ERROR = true; //Error porque no existe en el alfabeto
+                else if(ALONE_SYMBOL.contains(caracter)) {
+                    lexema += caracter;
+                    estadoLexema = ASYMBOL;
+                } else if (caracter == '\"'){                                          //Lectura String
+                    while(line != null && (caracter = line.charAt(++c)) != '\"'){
+                        lexema += caracter;
+                        if(c+1 == line.length()){
+                            line = br.readLine();
+                            f++;
+                            c = -1;
                         }
-                        if (line == null) ERROR = true;
-                        else estadoLexema = FIN_STRING;
-                    } else if ( ALONE_SYMBOL.contains(caracter) ) {                 //Símbolo solo
-                            lexema += caracter;
-                            estadoLexema = ASYMBOL;
-                    } else {
-                        while (c < line.length() && clasificar(caracter=line.charAt(c++)))      //Clasificar cadena
-                            lexema += caracter;
-                        c--;
                     }
+                    if (line == null) ERROR = true;
+                    else estadoLexema = FIN_STRING;
+                } else {
+                    while (c < line.length() && clasificar(caracter=line.charAt(c++))){                        
+                        lexema += caracter;
+                        if(estadoLexema == FIN_SYMBOL) break;
+                    }
+                    if(devolver == true) c -= 2;
+                    else c--;
                 }
-                if (ERROR == true)  System.out.println(">>> Error lexico (linea: " + (f+1) +", posicion:" + (cnt+1) + ")");;
+                
+                if (ERROR == true){
+                    printError(f, cnt);
+                    break;
+                }
                 switch (estadoLexema) {
-                    case CSYMBOL:
                     case CNSYMBOL:
-                    case ASYMBOL:
-                        output += RESERVED_SYMBOLS.get(lexema) + ",";
+                        if(NEED_U_SYMBOL.contains(lexema)){
+                            output.append(RESERVED_SYMBOLS.get(lexema));
+                        } else {
+                            ERROR = true;
+                            printError(f, cnt);
+                        }
                         break;
-                    
+                    case CSYMBOL:
+                    case FIN_SYMBOL:
+                    case ASYMBOL:
+                        output.append(RESERVED_SYMBOLS.get(lexema));
+                        break;
+                    case ENTERO:
+                        output.append("token_integer,");
+                        output.append(lexema);
+                        break;
+                    case DOUBLE:
+                        output.append("token_double,");
+                        output.append(lexema);
+                        break;
+                    case FIN_STRING:
+                        output.append("token_string,");
+                        output.append(lexema);
+                        break;
+                    case PALABRA:
+                        if(RESERVED_WORDS.contains(lexema)) output.append(lexema);
+                        else if(RESERVED_SYMBOLS.containsKey(lexema)) output.append(RESERVED_SYMBOLS.get(lexema));
+                        else{
+                            output.append("id,");
+                            output.append(lexema);
+                        }
+                        break;
+                    case ID:
+                        output.append("id,");
+                        output.append(lexema);
+                        break;                    
                 }
-                output += (f+1) + "," + (cnt+1) + ">";
-                System.out.println(output + " " +  lexema + " " + estadoLexema);
+                output.append(",");
+                output.append(f+1);
+                output.append(",");
+                output.append(cnt+1);
+                output.append(">");
+                if(!ERROR) System.out.println(output.toString());
             }
         }
     }
@@ -390,39 +502,56 @@ public class TCL_Analyzer {
         boolean flag = true;
         switch(estadoLexema){
             case DESCONOCIDO:
-                if(Character.isDigit(next))             estadoLexema = ENTERO;
-                else if(Character.isAlphabetic(next))   estadoLexema = PALABRA;
+                if(isDigit(next))             estadoLexema = ENTERO;
+                else if(isLetter(next))                 estadoLexema = PALABRA;
                 else if(next == '_')                    estadoLexema = ID;
                 else if(CAN_ALONE_SYMBOL.contains(next))estadoLexema = CSYMBOL;
                 else if(NEED_U_SYMBOL.contains(next))   estadoLexema = CNSYMBOL;
                 else flag = false; 
                 break;
             case PALABRA:
-                if(Character.isDigit(next))             estadoLexema = ID;
-                else if(!Character.isAlphabetic(next)
-                        && !(next == '_'))                flag = false;
+                if(isDigit(next))             estadoLexema = ID;
+                else if(!isLetter(next) && next != '_')  {
+                    flag = false;
+                    devolver = true;
+                }
                 break;
             case ID:
-                if(!Character.isDigit(next)
-                        && !Character.isAlphabetic(next)
-                        && !(next == '_'))                flag = false;               
+                if(!isDigit(next) && !isLetter(next) && next != '_'){
+                    flag = false;
+                    devolver = true;
+                }
                 break;
-            case ENTERO: // AGREGAR LA OPCION DE 1e+012
+            case ENTERO: // TOCA MEJORAR CUANDO PASA A DOUBLE PORQUE SI ENTRA LA CADENA 10. DEBE ACEPTAR EL LEXEMA '10' Y ERROR EN .
                 if(next == '.')                         estadoLexema = DOUBLE;
-                else if(!Character.isDigit(next))       flag = false;
+                else if(!isDigit(next)){
+                    flag = false;
+                    devolver = true;
+                }
                 break;
             case DOUBLE:
-                if(!Character.isDigit(next))            flag = false;
+                if(!isDigit(next)){
+                    if(lexema.charAt(lexema.length()-1) == '.')
+                        ERROR = true;
+                    flag = false;
+                    devolver = true;
+                }
                 break;
             case CSYMBOL:
                 switch(lexema.charAt(0)) {
                     case '*':
-                        if(next != '*')                 ERROR = true;
-                        flag = false;
+                        if(next == '*') estadoLexema = FIN_SYMBOL; 
+                        else {
+                            flag = false;
+                            devolver = true;
+                        }
                         break;
                     default:
-                        if(next != '=')                 ERROR = true;
-                        flag = false;
+                        if(next == '=') estadoLexema = FIN_SYMBOL;
+                        else {
+                            flag = false;
+                            devolver = true;
+                        }
                         break;
                 }
                 break;
@@ -430,33 +559,37 @@ public class TCL_Analyzer {
                 switch(lexema.charAt(0)) {
                     case '|':
                         if(next != '|'){
-                            flag = false;
                             ERROR = true;
-                        }
+                            flag = false;
+                        } else estadoLexema = FIN_SYMBOL;
                         break;
                     case '&':
                         if(next != '&'){
-                            flag = false;
                             ERROR = true;
-                        }
+                            flag = false;
+                        } else estadoLexema = FIN_SYMBOL;
                         break;
                     case '=':
-                        if(next != '&'){
-                            flag = false;
+                        if(next != '='){
                             ERROR = true;
-                        }
-                        break;
-                    default:
+                            flag = false;
+                        } else estadoLexema = FIN_SYMBOL;
                         break;
                 }
                 break;
         }
         return flag;
     }
-    public static boolean isError(char act, char next) {     
-            if(act != next && (next != ' ' || next != '\n' || next != '\t'))
-                return true;
-            return false;
+    
+    private static void printError(int f, int c){
+        System.out.println(">>> Error lexico (linea: " + (f+1) +", posicion:" + (c+1) + ")");
+    }
+    
+    private static boolean isLetter(char c){
+        return LETTERS.contains(c);
+    }
+    private static boolean isDigit(char c){
+        return DIGITS.contains(c);
     }
 }
 
