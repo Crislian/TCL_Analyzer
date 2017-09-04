@@ -1,0 +1,21 @@
+00
+Son idénticos
+
+01
+Diff: >>> Error lexico (linea: 18, posicion:5)	>>> Error lexico linea: 18, posicion: 5)
+
+02
+Son idénticos
+
+03
+Son idénticos
+
+04
+Diff: >>> Error lexico (linea: 8, posicion:1)	>>> Error lexico linea: 8, posicion: 1)
+
+05
+Diff: >>> Error lexico (linea: 7, posicion:1)	>>> Error lexico linea: 7, posicion: 1)
+
+06
+Son idénticos
+
