@@ -2,7 +2,7 @@
 Son idénticos
 
 01
-Diff: >>> Error lexico (linea: 18, posicion:5)	>>> Error lexico linea: 18, posicion: 5)
+Son idénticos
 
 02
 Son idénticos
@@ -11,10 +11,10 @@ Son idénticos
 Son idénticos
 
 04
-Diff: >>> Error lexico (linea: 8, posicion:1)	>>> Error lexico linea: 8, posicion: 1)
+Son idénticos
 
 05
-Diff: >>> Error lexico (linea: 7, posicion:1)	>>> Error lexico linea: 7, posicion: 1)
+Son idénticos
 
 06
 Son idénticos

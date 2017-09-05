@@ -18,9 +18,9 @@ public class Utils {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         testCases();
+//        tokenWordsGen();
     }
 
-    @SuppressWarnings("empty-statement")
     public static void testCases() throws FileNotFoundException, IOException {
         ByteArrayOutputStream stream;
         PrintStream standard = System.out;
@@ -41,15 +41,14 @@ public class Utils {
                 System.out.println(number);
                 System.setOut(outputStream);
                 System.out.println(number);
-                
+
                 BufferedReader br = new BufferedReader(new FileReader("resources/IO/" + file));
                 String l;
                 List<String> lineas = new LinkedList<>();
                 while ((l = br.readLine()) != null) {
                     lineas.add(l);
                 }
-                List<String> outputImp = Arrays.asList(inputs.get("in" + number + ".txt").split("\n"));
-
+                List<String> outputImp = Arrays.asList(inputs.get("in" + number + ".txt").split(Character.toString((char)13) + "\n"));
                 if (lineas.equals(outputImp)) {
                     System.out.println("Son idénticos");
                 } else {
@@ -59,7 +58,8 @@ public class Utils {
                         String impNext = impIt.next();
                         String outNext = outIt.next();
                         if (!impNext.equals(outNext)) {
-                            System.out.println("Diff: " + impNext + "\t" + outNext);
+                            System.out.println(impNext.length() + " " + outNext.length());
+                            System.out.println("Diff: " + impNext + " " + outNext);
                         }
                     }
                 }
@@ -89,7 +89,7 @@ public class Utils {
     }
 
     public static void tokenWordsGen() throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader("resources/tokenWords.txt"));
+        BufferedReader br = new BufferedReader(new FileReader("resources/reservedWords.txt"));
         LinkedList<String> ll = new LinkedList<>();
         String str;
         while ((str = br.readLine()) != null) {
@@ -97,11 +97,8 @@ public class Utils {
             for (String s : split) {
                 ll.add("add(\"" + s + "\");");
             }
-            if ("default".compareTo(split[split.length - 1]) == 0) {
-                break;
-            }
         }
-        ll.clear();
+//        ll.clear();
         Object[] toArray = ll.toArray();
         Arrays.sort(toArray);
         for (Object s : toArray) {
