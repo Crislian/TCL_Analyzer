@@ -13,196 +13,208 @@ import java.util.Set;
 public class TCL_Analyzer {
 
     private static final int DESCONOCIDO = -1,
-                            PALABRA = 0,
-                            ID = 1,
-                            ENTERO = 2,
-                            MAYBE_DOUBLE = 9,
-                            DOUBLE = 3,
-                            CSYMBOL = 4,
-                            CNSYMBOL = 5,
-                            ASYMBOL = 6,
-                            FIN_STRING = 7,
-                            FIN_SYMBOL = 8;
-    
-    private static final Set<Character> ALONE_SYMBOL = new HashSet<Character>() {{
-        add('{');
-        add('}');
-        add('$');
-        add(';');
-        add('[');
-        add(']');
-        add('(');
-        add(')');
-        add('+');
-        add('-');
-        add('/');
-        add('%');
-    }};
-    private static final Set<Character> CAN_ALONE_SYMBOL = new HashSet<Character>() {{
-        add('<');
-        add('>');
-        add('!');
-        add('*');
-    }};    
-    private static final Set<Character> NEED_U_SYMBOL = new HashSet<Character>() {{
-        add('=');
-        add('|');
-        add('&');
-    }};
-    
-    private static final Set<Character> LETTERS = new HashSet<Character>() {{
-        add('A');
-        add('B');
-        add('C');
-        add('D');
-        add('E');
-        add('F');
-        add('G');
-        add('H');
-        add('I');
-        add('J');
-        add('K');
-        add('L');
-        add('M');
-        add('N');
-        add('O');
-        add('P');
-        add('Q');
-        add('R');
-        add('S');
-        add('T');
-        add('U');
-        add('V');
-        add('W');
-        add('X');
-        add('Y');
-        add('Z');
-        add('a');
-        add('b');
-        add('c');
-        add('d');
-        add('e');
-        add('f');
-        add('g');
-        add('h');
-        add('i');
-        add('j');
-        add('k');
-        add('l');
-        add('m');
-        add('n');
-        add('o');
-        add('p');
-        add('q');
-        add('r');
-        add('s');
-        add('t');
-        add('u');
-        add('v');
-        add('w');
-        add('x');
-        add('y');
-        add('z');
-    }};
-    private static final Set<Character> DIGITS = new HashSet<Character>() {{
-        add('1');
-        add('2');
-        add('3');
-        add('4');
-        add('5');
-        add('6');
-        add('7');
-        add('8');
-        add('9');
-        add('0');
-    }};
-    private static final Set<Character> ALPHABET = new HashSet<Character>() {{
-        add('#');
-        add('{');
-        add('}');
-        add('$');
-        add(';');
-        add('.');
-        add('[');
-        add(']');
-        add('(');
-        add(')');
-        add('>');
-        add('<');
-        add('!');
-        add('=');
-        add('&');
-        add('|');
-        add('+');
-        add('-');
-        add('*');
-        add('/');
-        add('"');
-        add('_');
-        add('%');
-        add('A');
-        add('B');
-        add('C');
-        add('D');
-        add('E');
-        add('F');
-        add('G');
-        add('H');
-        add('I');
-        add('J');
-        add('K');
-        add('L');
-        add('M');
-        add('N');
-        add('O');
-        add('P');
-        add('Q');
-        add('R');
-        add('S');
-        add('T');
-        add('U');
-        add('V');
-        add('W');
-        add('X');
-        add('Y');
-        add('Z');
-        add('a');
-        add('b');
-        add('c');
-        add('d');
-        add('e');
-        add('f');
-        add('g');
-        add('h');
-        add('i');
-        add('j');
-        add('k');
-        add('l');
-        add('m');
-        add('n');
-        add('o');
-        add('p');
-        add('q');
-        add('r');
-        add('s');
-        add('t');
-        add('u');
-        add('v');
-        add('w');
-        add('x');
-        add('y');
-        add('z');
-        add('1');
-        add('2');
-        add('3');
-        add('4');
-        add('5');
-        add('6');
-        add('7');
-        add('8');
-        add('9');
-        add('0');
-    }};
+            PALABRA = 0,
+            ID = 1,
+            ENTERO = 2,
+            MAYBE_DOUBLE = 9,
+            DOUBLE = 3,
+            CSYMBOL = 4,
+            CNSYMBOL = 5,
+            ASYMBOL = 6,
+            FIN_STRING = 7,
+            FIN_SYMBOL = 8;
+
+    private static final Set<Character> ALONE_SYMBOL = new HashSet<Character>() {
+        {
+            add('{');
+            add('}');
+            add('$');
+            add(';');
+            add('[');
+            add(']');
+            add('(');
+            add(')');
+            add('+');
+            add('-');
+            add('/');
+            add('%');
+        }
+    };
+    private static final Set<Character> CAN_ALONE_SYMBOL = new HashSet<Character>() {
+        {
+            add('<');
+            add('>');
+            add('!');
+            add('*');
+        }
+    };
+    private static final Set<Character> NEED_U_SYMBOL = new HashSet<Character>() {
+        {
+            add('=');
+            add('|');
+            add('&');
+        }
+    };
+
+    private static final Set<Character> LETTERS = new HashSet<Character>() {
+        {
+            add('A');
+            add('B');
+            add('C');
+            add('D');
+            add('E');
+            add('F');
+            add('G');
+            add('H');
+            add('I');
+            add('J');
+            add('K');
+            add('L');
+            add('M');
+            add('N');
+            add('O');
+            add('P');
+            add('Q');
+            add('R');
+            add('S');
+            add('T');
+            add('U');
+            add('V');
+            add('W');
+            add('X');
+            add('Y');
+            add('Z');
+            add('a');
+            add('b');
+            add('c');
+            add('d');
+            add('e');
+            add('f');
+            add('g');
+            add('h');
+            add('i');
+            add('j');
+            add('k');
+            add('l');
+            add('m');
+            add('n');
+            add('o');
+            add('p');
+            add('q');
+            add('r');
+            add('s');
+            add('t');
+            add('u');
+            add('v');
+            add('w');
+            add('x');
+            add('y');
+            add('z');
+        }
+    };
+    private static final Set<Character> DIGITS = new HashSet<Character>() {
+        {
+            add('1');
+            add('2');
+            add('3');
+            add('4');
+            add('5');
+            add('6');
+            add('7');
+            add('8');
+            add('9');
+            add('0');
+        }
+    };
+    private static final Set<Character> ALPHABET = new HashSet<Character>() {
+        {
+            add('#');
+            add('{');
+            add('}');
+            add('$');
+            add(';');
+            add('.');
+            add('[');
+            add(']');
+            add('(');
+            add(')');
+            add('>');
+            add('<');
+            add('!');
+            add('=');
+            add('&');
+            add('|');
+            add('+');
+            add('-');
+            add('*');
+            add('/');
+            add('"');
+            add('_');
+            add('%');
+            add('A');
+            add('B');
+            add('C');
+            add('D');
+            add('E');
+            add('F');
+            add('G');
+            add('H');
+            add('I');
+            add('J');
+            add('K');
+            add('L');
+            add('M');
+            add('N');
+            add('O');
+            add('P');
+            add('Q');
+            add('R');
+            add('S');
+            add('T');
+            add('U');
+            add('V');
+            add('W');
+            add('X');
+            add('Y');
+            add('Z');
+            add('a');
+            add('b');
+            add('c');
+            add('d');
+            add('e');
+            add('f');
+            add('g');
+            add('h');
+            add('i');
+            add('j');
+            add('k');
+            add('l');
+            add('m');
+            add('n');
+            add('o');
+            add('p');
+            add('q');
+            add('r');
+            add('s');
+            add('t');
+            add('u');
+            add('v');
+            add('w');
+            add('x');
+            add('y');
+            add('z');
+            add('1');
+            add('2');
+            add('3');
+            add('4');
+            add('5');
+            add('6');
+            add('7');
+            add('8');
+            add('9');
+            add('0');
+        }
+    };
 
     private static final Set<String> RESERVED_WORDS = new HashSet<String>() {
         {
@@ -317,10 +329,9 @@ public class TCL_Analyzer {
                     }
                 }
                 if (estadoLexema == MAYBE_DOUBLE) {
+                    error = true;
                     output.append("token_integer,").append(lexema.substring(0, lexema.length() - 1));
-                    if (!error) {
-                        System.out.println(output.toString() + "," + (f + 1) + "," + (cnt + 1) + ">");
-                    }
+                    System.out.println(output.toString() + "," + (f + 1) + "," + (cnt + 1) + ">");
                     printError(f, c);
                     break;
                 }
@@ -412,7 +423,8 @@ public class TCL_Analyzer {
                 if (isDigit(next)) {
                     estadoLexema = DOUBLE;
                 } else {
-                    error = true;
+                    flag = false;
+                    devolver = true;
                 }
                 break;
             case DOUBLE:
