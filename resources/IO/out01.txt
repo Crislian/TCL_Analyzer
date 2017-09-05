@@ -18,4 +18,4 @@
 <token_not,16,5>
 <token_not,17,3>
 <token_diff_num,18,3>
->>> Error lexico linea: 18, posicion: 5)
+>>> Error lexico (linea: 18, posicion: 5)
