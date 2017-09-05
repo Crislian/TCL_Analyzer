@@ -51,7 +51,6 @@ public class TCL_Analyzer {
     }};
     
     private static final Set<Character> LETTERS = new HashSet<Character>() {{
-        add('%');
         add('A');
         add('B');
         add('C');
@@ -77,6 +76,7 @@ public class TCL_Analyzer {
         add('W');
         add('X');
         add('Y');
+        add('Z');
         add('a');
         add('b');
         add('c');
@@ -165,6 +165,7 @@ public class TCL_Analyzer {
         add('W');
         add('X');
         add('Y');
+        add('Z');
         add('a');
         add('b');
         add('c');
