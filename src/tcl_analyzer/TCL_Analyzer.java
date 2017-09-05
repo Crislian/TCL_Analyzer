@@ -12,17 +12,17 @@ import java.util.Set;
 
 public class TCL_Analyzer {
 
-    private static boolean ERROR, devolver;
     private static final int DESCONOCIDO = -1,
-                             PALABRA = 0,
-                             ID = 1,
-                             ENTERO = 2,
-                             DOUBLE = 3,
-                             CSYMBOL = 4,
-                             CNSYMBOL = 5,
-                             ASYMBOL = 6,
-                             FIN_STRING = 7,
-                             FIN_SYMBOL = 8;
+                            PALABRA = 0,
+                            ID = 1,
+                            ENTERO = 2,
+                            MAYBE_DOUBLE = 9,
+                            DOUBLE = 3,
+                            CSYMBOL = 4,
+                            CNSYMBOL = 5,
+                            ASYMBOL = 6,
+                            FIN_STRING = 7,
+                            FIN_SYMBOL = 8;
     
     private static final Set<Character> ALONE_SYMBOL = new HashSet<Character>() {{
         add('{');
@@ -400,64 +400,77 @@ public class TCL_Analyzer {
 
     private static int estadoLexema = DESCONOCIDO;
     private static String lexema;
-    
+    private static boolean error, devolver;
+
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
-        try  {
-            br = new BufferedReader(new FileReader("resources/IO/in0.txt"));
-        } catch (FileNotFoundException e) {
+        if (args.length > 0) {
+            br = new BufferedReader(new FileReader(args[0]));
+        } else {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
+        ejecutar(br);
+    }
+
+    public static void ejecutar(BufferedReader reader) throws IOException {
         String line;
         char caracter;
-        for(int f = 0; (line=br.readLine())!=null; f++){
-            for (int c = 0; c < line.length() && !ERROR; c++){
+        error = false;
+        for (int f = 0; (line = reader.readLine()) != null; f++) {
+            for (int c = 0; c < line.length() && !error; c++) {
                 int cnt = c;
-                StringBuilder output = new StringBuilder("<");
-                lexema = "";
-                ERROR = false;
-                devolver = false;
-                estadoLexema = DESCONOCIDO;
                 caracter = line.charAt(c);
-                if (caracter == ' ' || caracter == '\t' || caracter == '\n')    //Ignorar espacio/tab/salto 
+                StringBuilder output = new StringBuilder("<");
+                reiniciarVariables();
+                if (caracter == ' ' || caracter == '\t' || caracter == '\n') {  //Ignorar espacio/tab/salto 
                     continue;
-                else if(caracter == '#') break;    // Comentario, se ignora el resto de la linea            
-                else if(caracter == '.' || !ALPHABET.contains(caracter)) ERROR = true; //Error porque no existe en el alfabeto
-                else if(ALONE_SYMBOL.contains(caracter)) {
-                    lexema += caracter;
-                    estadoLexema = ASYMBOL;
-                } else if (caracter == '\"'){                                          //Lectura String
-                    while(line != null && (caracter = line.charAt(++c)) != '\"'){
+                } else if (caracter == '#') {
+                    break;                                                      // Comentario, se ignora el resto de la linea            
+                }
+                int validacion = validarPrimerChar(caracter);
+                if (validacion == 2) {
+                    while (line != null && (caracter = line.charAt(++c)) != '\"') {
                         lexema += caracter;
-                        if(c+1 == line.length()){
-                            line = br.readLine();
+                        if (c + 1 == line.length()) {
+                            line = reader.readLine();
                             f++;
                             c = -1;
                         }
                     }
-                    if (line == null) ERROR = true;
-                    else estadoLexema = FIN_STRING;
-                } else {
-                    while (c < line.length() && clasificar(caracter=line.charAt(c++))){                        
-                        lexema += caracter;
-                        if(estadoLexema == FIN_SYMBOL) break;
+                    if (line == null) {
+                        error = true;
+                    } else {
+                        estadoLexema = FIN_STRING;
                     }
-                    if(devolver == true) c -= 2;
-                    else c--;
+                } else if (validacion == 0) {
+                    while (c < line.length() && clasificar(caracter = line.charAt(c++))) {
+                        lexema += caracter;
+                        if (estadoLexema == FIN_SYMBOL) {
+                            break;
+                        }
+                    }
+                    if (devolver == true) {
+                        c -= 2;
+                    } else {
+                        c--;
+                    }
                 }
-                
-                if (ERROR == true){
+                if (estadoLexema == MAYBE_DOUBLE) {
+                    output.append("token_integer,").append(lexema.substring(0, lexema.length() - 1));
+                    if (!error) {
+                        System.out.println(output.toString() + "," + (f + 1) + "," + (cnt + 1) + ">");
+                    }
+                    printError(f, c);
+                    break;
+                }
+                if (error == true) {
                     printError(f, cnt);
                     break;
                 }
                 switch (estadoLexema) {
                     case CNSYMBOL:
-                        if(NEED_U_SYMBOL.contains(lexema)){
-                            output.append(RESERVED_SYMBOLS.get(lexema));
-                        } else {
-                            ERROR = true;
-                            printError(f, cnt);
-                        }
+                        error = true;
+                        printError(f, cnt);
                         break;
                     case CSYMBOL:
                     case FIN_SYMBOL:
@@ -465,91 +478,105 @@ public class TCL_Analyzer {
                         output.append(RESERVED_SYMBOLS.get(lexema));
                         break;
                     case ENTERO:
-                        output.append("token_integer,");
-                        output.append(lexema);
+                        output.append("token_integer,").append(lexema);
                         break;
                     case DOUBLE:
-                        output.append("token_double,");
-                        output.append(lexema);
+                        output.append("token_double,").append(lexema);
                         break;
                     case FIN_STRING:
-                        output.append("token_string,");
-                        output.append(lexema);
+                        output.append("token_string,").append(lexema);
                         break;
                     case PALABRA:
-                        if(RESERVED_WORDS.contains(lexema)) output.append(lexema);
-                        else if(RESERVED_SYMBOLS.containsKey(lexema)) output.append(RESERVED_SYMBOLS.get(lexema));
-                        else{
-                            output.append("id,");
+                        if (RESERVED_WORDS.contains(lexema)) {
                             output.append(lexema);
+                        } else if (RESERVED_SYMBOLS.containsKey(lexema)) {
+                            output.append(RESERVED_SYMBOLS.get(lexema));
+                        } else {
+                            output.append("id,").append(lexema);
                         }
                         break;
                     case ID:
-                        output.append("id,");
-                        output.append(lexema);
-                        break;                    
+                        output.append("id,").append(lexema);
+                        break;
                 }
-                output.append(",");
-                output.append(f+1);
-                output.append(",");
-                output.append(cnt+1);
-                output.append(">");
-                if(!ERROR) System.out.println(output.toString());
+                output.append(",").append(f + 1).append(",").append(cnt + 1).append(">");
+                if (!error) {
+                    System.out.println(output.toString());
+                }
             }
         }
     }
 
-    public static boolean clasificar(char next){
+    public static boolean clasificar(char next) {
         boolean flag = true;
-        switch(estadoLexema){
+        switch (estadoLexema) {
             case DESCONOCIDO:
-                if(isDigit(next))             estadoLexema = ENTERO;
-                else if(isLetter(next))                 estadoLexema = PALABRA;
-                else if(next == '_')                    estadoLexema = ID;
-                else if(CAN_ALONE_SYMBOL.contains(next))estadoLexema = CSYMBOL;
-                else if(NEED_U_SYMBOL.contains(next))   estadoLexema = CNSYMBOL;
-                else flag = false; 
+                if (isDigit(next)) {
+                    estadoLexema = ENTERO;
+                } else if (isLetter(next)) {
+                    estadoLexema = PALABRA;
+                } else if (next == '_') {
+                    estadoLexema = ID;
+                } else if (CAN_ALONE_SYMBOL.contains(next)) {
+                    estadoLexema = CSYMBOL;
+                } else if (NEED_U_SYMBOL.contains(next)) {
+                    estadoLexema = CNSYMBOL;
+                } else {
+                    flag = false;
+                }
                 break;
             case PALABRA:
-                if(isDigit(next))             estadoLexema = ID;
-                else if(!isLetter(next) && next != '_')  {
+                if (isDigit(next)) {
+                    estadoLexema = ID;
+                } else if (!isLetter(next) && next != '_') {
                     flag = false;
                     devolver = true;
                 }
                 break;
             case ID:
-                if(!isDigit(next) && !isLetter(next) && next != '_'){
+                if (!isDigit(next) && !isLetter(next) && next != '_') {
                     flag = false;
                     devolver = true;
                 }
                 break;
-            case ENTERO: // TOCA MEJORAR CUANDO PASA A DOUBLE PORQUE SI ENTRA LA CADENA 10. DEBE ACEPTAR EL LEXEMA '10' Y ERROR EN .
-                if(next == '.')                         estadoLexema = DOUBLE;
-                else if(!isDigit(next)){
+            case ENTERO:
+                if (next == '.') {
+                    estadoLexema = MAYBE_DOUBLE;
+                } else if (!isDigit(next)) {
                     flag = false;
                     devolver = true;
+                }
+                break;
+            case MAYBE_DOUBLE:
+                if (isDigit(next)) {
+                    estadoLexema = DOUBLE;
+                } else {
+                    error = true;
                 }
                 break;
             case DOUBLE:
-                if(!isDigit(next)){
-                    if(lexema.charAt(lexema.length()-1) == '.')
-                        ERROR = true;
+                if (!isDigit(next)) {
+                    if (lexema.charAt(lexema.length() - 1) == '.') {
+                        error = true;
+                    }
                     flag = false;
                     devolver = true;
                 }
                 break;
             case CSYMBOL:
-                switch(lexema.charAt(0)) {
+                switch (lexema.charAt(0)) {
                     case '*':
-                        if(next == '*') estadoLexema = FIN_SYMBOL; 
-                        else {
+                        if (next == '*') {
+                            estadoLexema = FIN_SYMBOL;
+                        } else {
                             flag = false;
                             devolver = true;
                         }
                         break;
                     default:
-                        if(next == '=') estadoLexema = FIN_SYMBOL;
-                        else {
+                        if (next == '=') {
+                            estadoLexema = FIN_SYMBOL;
+                        } else {
                             flag = false;
                             devolver = true;
                         }
@@ -557,41 +584,48 @@ public class TCL_Analyzer {
                 }
                 break;
             case CNSYMBOL:
-                switch(lexema.charAt(0)) {
-                    case '|':
-                        if(next != '|'){
-                            ERROR = true;
-                            flag = false;
-                        } else estadoLexema = FIN_SYMBOL;
-                        break;
-                    case '&':
-                        if(next != '&'){
-                            ERROR = true;
-                            flag = false;
-                        } else estadoLexema = FIN_SYMBOL;
-                        break;
-                    case '=':
-                        if(next != '='){
-                            ERROR = true;
-                            flag = false;
-                        } else estadoLexema = FIN_SYMBOL;
-                        break;
+                if (lexema.charAt(0) != next) {
+                    error = true;
+                    flag = false;
+                } else {
+                    estadoLexema = FIN_SYMBOL;
                 }
+
                 break;
         }
         return flag;
     }
-    
-    private static void printError(int f, int c){
-        System.out.println(">>> Error lexico (linea: " + (f+1) +", posicion:" + (c+1) + ")");
+
+    private static void printError(int f, int c) {
+        System.out.println(">>> Error lexico (linea: " + (f + 1) + ", posicion:" + (c + 1) + ")");
     }
-    
-    private static boolean isLetter(char c){
+
+    private static void reiniciarVariables() {
+        lexema = "";
+        error = false;
+        devolver = false;
+        estadoLexema = DESCONOCIDO;
+    }
+
+    public static int validarPrimerChar(char first) {
+        if (first == '.' || !ALPHABET.contains(first)) {
+            error = true;                                                       //Error porque no existe en el alfabeto
+            return 1;
+        } else if (ALONE_SYMBOL.contains(first)) {
+            lexema += first;
+            estadoLexema = ASYMBOL;
+            return 1;
+        } else if (first == '\"') {                                             //Lectura String
+            return 2;
+        }
+        return 0;
+    }
+
+    private static boolean isLetter(char c) {
         return LETTERS.contains(c);
     }
-    private static boolean isDigit(char c){
+
+    private static boolean isDigit(char c) {
         return DIGITS.contains(c);
     }
 }
-
-
