@@ -305,14 +305,11 @@ public class TCL_Analyzer {
                     while (line != null && (caracter = line.charAt(++c)) != '\"') {
                         lexema += caracter;
                         if (c + 1 == line.length()) {
-                            line = reader.readLine();
-                            f++;
-                            c = -1;
+                            error = true;
+                            break;
                         }
                     }
-                    if (line == null) {
-                        error = true;
-                    } else {
+                    if (!error) {
                         estadoLexema = FIN_STRING;
                     }
                 } else if (validacion == 0) {

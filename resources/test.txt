@@ -1,21 +1,102 @@
-00
+A/out00.txt
 Son idénticos
 
-01
+A/out01.txt
 Son idénticos
 
-02
+A/out02.txt
 Son idénticos
 
-03
+A/out03.txt
 Son idénticos
 
-04
+A/out04.txt
 Son idénticos
 
-05
+B/out00.txt
 Son idénticos
 
-06
+B/out01.txt
+Son idénticos
+
+B/out02.txt
+Son idénticos
+
+B/out03.txt
+Son idénticos
+
+B/out04.txt
+Son idénticos
+
+C/out00.txt
+Son idénticos
+
+C/out01.txt
+Son idénticos
+
+C/out02.txt
+Son idénticos
+
+C/out03.txt
+Son idénticos
+
+D/out00.txt
+Son idénticos
+
+D/out01.txt
+Son idénticos
+
+D/out02.txt
+Son idénticos
+
+D/out03.txt
+Son idénticos
+
+E/out00.txt
+Son idénticos
+
+E/out01.txt
+Son idénticos
+
+E/out02.txt
+Son idénticos
+
+E/out03.txt
+Son idénticos
+
+E/out04.txt
+Son idénticos
+
+E/out05.txt
+Son idénticos
+
+E/out06.txt
+Son idénticos
+
+E/out07.txt
+Son idénticos
+
+basics/out00.txt
+Son idénticos
+
+lexer-samples/out00.txt
+Son idénticos
+
+lexer-samples/out01.txt
+Son idénticos
+
+lexer-samples/out02.txt
+Son idénticos
+
+lexer-samples/out03.txt
+Son idénticos
+
+lexer-samples/out04.txt
+Son idénticos
+
+lexer-samples/out05.txt
+Son idénticos
+
+lexer-samples/out06.txt
 Son idénticos
 
