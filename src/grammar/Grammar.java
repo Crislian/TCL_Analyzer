@@ -22,8 +22,7 @@ public class Grammar {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         leerGramatica();
-        pred();
-        
+        pred();        
     }
 
     public static void leerGramatica() throws FileNotFoundException, IOException {
@@ -92,7 +91,7 @@ public class Grammar {
 
         Set<String> sig = siguientes.get(X);
         if (X.equals(primerNoTerminal))                                         // FOLLOW(S) = {$}
-            sig.add("$");                                                       // S = Start Symbol
+            sig.add("EOF");                                                       // S = Start Symbol
 
         Map<String, List<List<String>>> reglasX = new HashMap<>();
         for (String noTerminal : gramatica.keySet())
@@ -169,5 +168,13 @@ public class Grammar {
         }
         substrings.add(ss);
         return substrings;
+    }
+
+    public static Map<String, List<List<String>>> getGramatica() {
+        return gramatica;
+    }
+
+    public static Map<String, List<Set<String>>> getPredicciones() {
+        return predicciones;
     }
 }
