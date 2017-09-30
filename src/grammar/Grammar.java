@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +22,8 @@ public class Grammar {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         leerGramatica();
-        System.out.println(gramatica);
-
-        for (String noTerminal : gramatica.keySet())
-            System.out.println("Primeros de " + noTerminal + ":\t" + first(noTerminal));
-        for (String noTerminal : gramatica.keySet())
-            System.out.println("Siguientes de " + noTerminal + ":\t" + follow(noTerminal));
         pred();
-        for (String noTerminal : gramatica.keySet())
-            System.out.println("Prediccion de " + noTerminal + ":\t" + predicciones.get(noTerminal));
+        
     }
 
     public static void leerGramatica() throws FileNotFoundException, IOException {
@@ -45,7 +37,7 @@ public class Grammar {
             if (gramatica.isEmpty())
                 primerNoTerminal = noTerminal;
             if (!gramatica.containsKey(noTerminal))
-                gramatica.put(noTerminal, new LinkedList<List<String>>());
+                gramatica.put(noTerminal, new ArrayList<List<String>>());
             List<List<String>> producciones = gramatica.get(noTerminal);
             for (int i = 2; i < item.length; i++) {
                 if (item[i] == "|" || item[i].isEmpty())
@@ -76,12 +68,14 @@ public class Grammar {
                 prim.add("ε");                                                  // FIRST(ε) = {ε}
                 continue;
             }
+            boolean removed = false;
             for (String Y : reglasNT) {                                         // X ➔ Y1 Y2 Y3
-                boolean removed = addFirst(Y, prim);                            // Add FIRST(Y)-ε to FIRST(X)
+                removed = addFirst(Y, prim);                            // Add FIRST(Y)-ε to FIRST(X)
                 if (!removed)
                     break;
             }
-            prim.add("ε");
+            if (removed)
+                prim.add("ε"); 
         }
         return prim;
     }
@@ -126,14 +120,13 @@ public class Grammar {
             predicciones.put(entry.getKey(), new LinkedList<>());
             List<Set<String>> predictsX = predicciones.get(entry.getKey());
             for (List<String> regla : entry.getValue()) {
-                HashSet<String> predict = new HashSet<>();
+                Set<String> predict = new HashSet<>();
                 int pos = -1;
                 boolean removed = true;
                 while (removed && ++pos < regla.size())                         // A ➔ α X β
                     removed = addFirst(regla.get(pos), predict);                    // Add FIRST(β)-ε to FOLLOW(X)
                 if (removed)
                     predict.addAll(follow(entry.getKey()));
-
                 predictsX.add(predict);
             }
         }
@@ -149,9 +142,10 @@ public class Grammar {
     private static List<String> splitRule(String s) {
         List<String> substrings = new LinkedList<>();
         String ss = "";
-        int state = 0;
+        int state = 0, i = 0;
         for (int c : s.chars().toArray()) {
-            if (c == '|') {
+            i++;
+            if (c == '|' && (i < s.length() && s.charAt(i) != '|')) {
                 substrings.add(ss);
                 ss = "";
                 state = 0;

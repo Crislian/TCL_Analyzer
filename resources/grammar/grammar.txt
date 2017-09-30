@@ -76,7 +76,8 @@ PARAM_FUNC -> { AUX_PARAM | ε
 AUX_PARAM -> ASIGNACION } PARAM_FUNC | EXPR } PARAM_FUNC
 
 ASIGNACION -> VALOR | $ identificador INDICE | AGRUP
-INDICE -> ( ASIGNACION ) | ε
+INDICE -> ( VAL_INDICE ) | ε
+VAL_INDICE -> VALOR | AGRUP
 VALOR -> valor_string | valor_entero | valor_double
 INCREMENTO -> valor_entero | ε
 BREAK -> break ;
@@ -98,3 +99,10 @@ INICIO_WHILE -> while { EXPRESION } {
 INICIO_SWITCH -> switch $ identificador INDICE {
 INICIO_CASE -> case valor_entero {
 INICIO_DEFAULT -> default {
+
+
+EXPRESION -> TERM AUX_EXPR | OP_UNARIO EXPRESION | ( EXPRESION )
+AUX_EXPR -> OP_BINARIO EXPRESION | ε
+TERM -> $ identificador INDICE | AGRUP | VALOR
+OP_UNARIO -> - | !
+OP_BINARIO -> > | < | >= | <= | eq | == | ne | != | && | || | + | - | * | / | % | **

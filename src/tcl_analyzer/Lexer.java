@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TCL_Analyzer {
+public class Lexer {
 
     private static final int DESCONOCIDO = -1,
             PALABRA = 0,

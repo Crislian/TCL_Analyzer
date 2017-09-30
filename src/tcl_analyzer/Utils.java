@@ -38,7 +38,7 @@ public class Utils {
                     stream = new ByteArrayOutputStream();
                     System.setOut(new PrintStream(stream));
                     String[] args = {path + folder + file};
-                    TCL_Analyzer.main(args);
+                    Lexer.main(args);
                     inputs.put(file, stream.toString());
                 } else if (file.contains("out")) {
                     String number = file.replaceAll("\\D+", "");
