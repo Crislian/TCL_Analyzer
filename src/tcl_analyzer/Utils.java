@@ -17,7 +17,7 @@ import java.util.List;
 public class Utils {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        testCases();
+//        testCases();
 //        tokenWordsGen();
     }
 
