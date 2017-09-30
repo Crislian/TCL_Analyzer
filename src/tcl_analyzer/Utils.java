@@ -17,53 +17,60 @@ import java.util.List;
 public class Utils {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        testCases();
+//        testCases();
 //        tokenWordsGen();
     }
 
     public static void testCases() throws FileNotFoundException, IOException {
-        ByteArrayOutputStream stream;
-        PrintStream standard = System.out;
+        String path = "resources/IO/";
+        String[] folders = new File(path).list();
+        Arrays.sort(folders);
         PrintStream outputStream = new PrintStream("resources/test.txt");
-        HashMap<String, String> inputs = new HashMap<>();
-        String[] files = new File("resources/IO").list();
-        Arrays.sort(files);
-        for (String file : files) {
-            if (file.contains("in")) {
-                stream = new ByteArrayOutputStream();
-                System.setOut(new PrintStream(stream));
-                String[] args = {"resources/IO/" + file};
-                TCL_Analyzer.main(args);
-                inputs.put(file, stream.toString());
-            } else {
-                String number = file.replaceAll("\\D+", "");
-                System.setOut(standard);
-                System.out.println(number);
-                System.setOut(outputStream);
-                System.out.println(number);
-
-                BufferedReader br = new BufferedReader(new FileReader("resources/IO/" + file));
-                String l;
-                List<String> lineas = new LinkedList<>();
-                while ((l = br.readLine()) != null) {
-                    lineas.add(l);
-                }
-                List<String> outputImp = Arrays.asList(inputs.get("in" + number + ".txt").split(Character.toString((char)13) + "\n"));
-                if (lineas.equals(outputImp)) {
-                    System.out.println("Son idénticos");
-                } else {
-                    Iterator<String> impIt = outputImp.iterator();
-                    Iterator<String> outIt = lineas.iterator();
-                    while (impIt.hasNext() && outIt.hasNext()) {
-                        String impNext = impIt.next();
-                        String outNext = outIt.next();
-                        if (!impNext.equals(outNext)) {
-                            System.out.println(impNext.length() + " " + outNext.length());
-                            System.out.println("Diff: " + impNext + " " + outNext);
+        PrintStream standard = System.out;
+        ByteArrayOutputStream stream;
+        for (String folder : folders) {
+            folder += "/";
+            HashMap<String, String> inputs = new HashMap<>();
+            String[] files = new File(path + folder).list();
+            Arrays.sort(files);
+            for (String file : files) {
+                if (file.contains("in")) {
+                    stream = new ByteArrayOutputStream();
+                    System.setOut(new PrintStream(stream));
+                    String[] args = {path + folder + file};
+                    TCL_Analyzer.main(args);
+                    inputs.put(file, stream.toString());
+                } else if (file.contains("out")) {
+                    String number = file.replaceAll("\\D+", "");
+                    BufferedReader br = new BufferedReader(new FileReader(path + folder + file));
+                    String l;
+                    List<String> lineas = new LinkedList<>();
+                    while ((l = br.readLine()) != null) {
+                        lineas.add(l);
+                    }
+                    List<String> outputImp = Arrays.asList(inputs.get("in" + number + ".txt").split(Character.toString((char) 13) + "\n"));
+                    
+                    System.setOut(standard);
+                    System.out.println(folder + file);
+                    System.setOut(outputStream);
+                    System.out.println(folder + file);
+                    
+                    if (lineas.equals(outputImp)) {
+                        System.out.println("Son idénticos");
+                    } else {
+                        Iterator<String> impIt = outputImp.iterator();
+                        Iterator<String> outIt = lineas.iterator();
+                        while (impIt.hasNext() && outIt.hasNext()) {
+                            String impNext = impIt.next();
+                            String outNext = outIt.next();
+                            if (!impNext.equals(outNext)) {
+                                System.out.println(impNext.length() + " " + outNext.length());
+                                System.out.println("Diff: " + impNext + " " + outNext);
+                            }
                         }
                     }
+                    System.out.println();
                 }
-                System.out.println();
             }
         }
     }
