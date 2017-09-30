@@ -227,6 +227,7 @@ public class TCL_Analyzer {
             add("switch");
             add("then");
             add("while");
+            add("return");
         }
     };
     private static final Map<String, String> RESERVED_SYMBOLS = new HashMap<String, String>() {
@@ -266,7 +267,7 @@ public class TCL_Analyzer {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
         if (args.length > 0) {
-            br = new BufferedReader(new FileReader(args[0]));
+            br = new BufferedReader(new FileReader(new FileReader(args[0] )));
         } else {
             br = new BufferedReader(new InputStreamReader(System.in));
         }
@@ -290,15 +291,10 @@ public class TCL_Analyzer {
                 }
                 int validacion = validarPrimerChar(caracter);
                 if (validacion == 2) {
-                    while (line != null && (caracter = line.charAt(++c)) != '\"') {
+                    while (c+1 < line.length() && (caracter = line.charAt(++c)) != '\"') {
                         lexema += caracter;
-                        if (c + 1 == line.length()) {
-                            line = reader.readLine();
-                            f++;
-                            c = -1;
-                        }
                     }
-                    if (line == null) {
+                    if (c + 1 == line.length() && line.charAt(c) != '\"') {
                         error = true;
                     } else {
                         estadoLexema = FIN_STRING;
@@ -310,21 +306,23 @@ public class TCL_Analyzer {
                             break;
                         }
                     }
+                    if(c == line.length() && estadoLexema == MAYBE_DOUBLE) error = true;
                     if (devolver == true) {
                         c -= 2;
                     } else {
                         c--;
                     }
                 }
-                if (estadoLexema == MAYBE_DOUBLE) {
+                if (estadoLexema == MAYBE_DOUBLE) {           
                     output.append("token_integer,").append(lexema.substring(0, lexema.length() - 1));
-                    if (!error) {
+                    if (error) {
                         System.out.println(output.toString() + "," + (f + 1) + "," + (cnt + 1) + ">");
                     }
                     printError(f, c);
                     break;
                 }
-                if (error == true) {
+                
+                if (error == true) {                   
                     printError(f, cnt);
                     break;
                 }
@@ -340,8 +338,8 @@ public class TCL_Analyzer {
                         break;
                     case ENTERO:
                         output.append("token_integer,").append(lexema);
-                        break;
-                    case DOUBLE:
+                        break;                    case DOUBLE:
+
                         output.append("token_double,").append(lexema);
                         break;
                     case FIN_STRING:
@@ -411,8 +409,10 @@ public class TCL_Analyzer {
             case MAYBE_DOUBLE:
                 if (isDigit(next)) {
                     estadoLexema = DOUBLE;
-                } else {
+                } else {                    
                     error = true;
+                    flag = false;
+                    devolver = true;
                 }
                 break;
             case DOUBLE:
