@@ -25,9 +25,9 @@ public class Utils {
 //    public final static int LEXER_CASE = 0;
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
-        testCases(PARSER_CASE);
+//        testCases(PARSER_CASE);
 //        tokenWordsGen();
-//        crearConstructores();
+        crearConstructores();
     }
 
     public static final String NOMBRE_METODO = "main";
