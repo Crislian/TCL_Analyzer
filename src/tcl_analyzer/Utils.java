@@ -21,8 +21,6 @@ public class Utils {
 
     public final static int LEXER_CASE = 0x00;
     public final static int PARSER_CASE = 0x01;
-//    public final static int LEXER_CASE = 0X10;
-//    public final static int LEXER_CASE = 0;
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
         testCases(PARSER_CASE);
@@ -47,8 +45,8 @@ public class Utils {
 //                m.invoke(instancia, args);
 //            }
 //        }
+        
         String folderName = null;
-
         switch (caso) {
             case LEXER_CASE:
                 folderName = "Lexer";
@@ -66,12 +64,13 @@ public class Utils {
         PrintStream standard = System.out;
         ByteArrayOutputStream stream;
         for (String folder : folders) {
+            if (folder.contains("."))
+                continue;
             folder += "/";
             HashMap<String, String> inputs = new HashMap<>();
             String[] files = new File(path + folder).list();
             Arrays.sort(files);
             for (String file : files) {
-                System.out.println(path + folder + file);
                 if (file.contains("in")) {
                     stream = new ByteArrayOutputStream();
                     System.setOut(new PrintStream(stream));
@@ -83,9 +82,6 @@ public class Utils {
                         case PARSER_CASE:
                             Parser.main(args);
                             break;
-//                        case LEXER_CASE:
-//                            Lexer.main(args);
-//                            break;
                         default:
                             throw new Exception("Pinche cabro mira las putas parametrizaciones!");
                     }
@@ -169,7 +165,7 @@ public class Utils {
         Map<String, List<List<String>>> gramatica = Grammar.getGramatica();
         Map<String, List<Set<String>>> predicciones = Grammar.getPredicciones();
 
-        System.setOut(new PrintStream(new PrintStream("resources/GrammarPred.txt")));
+        System.setOut(new PrintStream("resources/GrammarPred.txt"));
 
         StringBuilder g = new StringBuilder();
         g.append("final static Map<String, List<List<String>>> GRAMMAR = new HashMap<String, List<List<String>>>() {{");

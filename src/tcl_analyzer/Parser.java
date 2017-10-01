@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -188,11 +187,19 @@ public class Parser {
         private int linea;
         private int columna;
         private String lexema;
+        private String valor;
 
         public Token(int linea, int columna, String lexema) {
             this.linea = linea;
             this.columna = columna;
             this.lexema = lexema;
+        }
+
+        public Token(int linea, int columna, String lexema, String valor) {
+            this.linea = linea;
+            this.columna = columna;
+            this.lexema = lexema;
+            this.valor = valor;
         }
 
         int getLinea() {
@@ -204,6 +211,12 @@ public class Parser {
         }
 
         String getLexema() {
+            return this.lexema;
+        }
+        
+        String getValor() {
+            if (valor != null)
+                return this.valor;
             return this.lexema;
         }
     }
@@ -225,12 +238,12 @@ public class Parser {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
-//        args = new String[]{"resources/IO/Parser/in.txt"};
-        if (args.length > 0) {
+        if (args.length == 0)
+            args = new String[]{"resources/IO/Parser/in.txt"};
+        if (args.length > 0)
             br = new BufferedReader(new FileReader(args[0]));
-        } else {
+        else
             br = new BufferedReader(new InputStreamReader(System.in));
-        }
         tokenizer(br);
         parser();
     }
@@ -244,27 +257,20 @@ public class Parser {
         while (!tokens.isEmpty() && !error) {
             Token next = tokens.peek();
             String nt = stk.peek();
-//            System.out.println("------------------- " + next.getLexema() + " -----------------------");
-//            System.out.println(stk);
-//            System.out.println(nt);
             if (next.getLexema().equals(nt)) {
-                stk.pop();
                 tokens.poll();
+                stk.pop();
             } else {
                 int idx = predictIndex(nt, next.getLexema());
                 if (idx == -1) {
                     error = true;
                 } else {
                     List<String> rule = GRAMMAR.get(nt).get(idx);
-//                    System.out.println(rule);
-                    if (rule.size() == 1 && rule.get(0).equals("ε")) {
-                        stk.pop();
-                    } else {
-                        stk.pop();
+                    stk.pop();
+                    if (rule.size() != 1 || !rule.get(0).equals("ε")) {
                         ListIterator<String> it = rule.listIterator(rule.size());
-                        while (it.hasPrevious()) {
+                        while (it.hasPrevious())
                             stk.push(it.previous());
-                        }
                     }
                 }
             }
@@ -286,8 +292,8 @@ public class Parser {
     
     public static void printError(Set<String> predError, Token err){
         StringBuilder result = new StringBuilder("");
-        result.append("<").append(err.getLinea()).append(",").append(err.getColumna()).append("> Error sintactico se encontro: ");
-        result.append("'").append(err.getLexema()).append("'; se esperaba: ");
+        result.append("<").append(err.getLinea()).append(",").append(err.getColumna());
+        result.append("> Error sintactico se encontro: ").append("'").append(err.getValor()).append("'; se esperaba: ");
         Iterator<String> it = predError.iterator();
         while(it.hasNext()){
             result.append("'").append(it.next()).append("'");
@@ -302,8 +308,6 @@ public class Parser {
         if (!PREDICT.containsKey(nt))
             return -1;
         List<Set<String>> pred = PREDICT.get(nt);
-        if (pred == null)
-        System.out.println("JUEPUTA " + nt);
         for (int i = 0; i < pred.size(); i++) {
             if (pred.get(i).contains(token)) {
                 return i;
@@ -333,42 +337,43 @@ public class Parser {
                 }
                 int validacion = validarPrimerChar(caracter);
                 if (validacion == 2) {
-                    while (c + 1 < line.length() && line.charAt(++c) != '\"') {
-                    }
+                    while (c + 1 < line.length() && line.charAt(++c) != '\"')
+                        lexema += line.charAt(c);
                     estadoLexema = FIN_STRING;
                 } else if (validacion == 0) {
                     while (c < line.length() && clasificar(caracter = line.charAt(c++), lexema)) {
                         lexema += caracter;
-                        if (estadoLexema == FIN_SYMBOL) {
+                        if (estadoLexema == FIN_SYMBOL)
                             break;
-                        }
                     }
-                    if (devolver == true) {
+                    if (devolver == true)
                         c -= 2;
-                    } else {
+                    else
                         c--;
-                    }
-                } else {
+                } else
                     lexema += caracter;
-                }
+                String valor = null;
                 switch (estadoLexema) {
                     case FIN_STRING:
+                        valor = "\"" + lexema + "\"";
                         lexema = "valor_string";
                         break;
                     case ENTERO:
+                        valor = lexema;
                         lexema = "valor_entero";
                         break;
                     case DOUBLE:
+                        valor = lexema;
                         lexema = "valor_double";
                         break;
                     default:
                         if (!RESERVED_SYMBOLS.contains(lexema) && !RESERVED_WORDS.contains(lexema)) {
+                            valor = lexema;
                             lexema = "identificador";
                         }
                         break;
                 }
-                Token tkn = new Token(row, col, lexema);
-                tokens.add(tkn);
+                tokens.add(new Token(row, col, lexema, valor));
             }
         }
         tokens.add(new Token(f + 1, c + 1, "EOF"));
