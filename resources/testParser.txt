@@ -1,46 +1,34 @@
 parser-samples/out00.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out01.txt
 parser-samples/out01.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out02.txt
 parser-samples/out02.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out03.txt
 parser-samples/out03.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out04.txt
 parser-samples/out04.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out05.txt
 parser-samples/out05.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out06.txt
 parser-samples/out06.txt
-95 73
-Diff: <12,12> Error sintactico se encontro: 'valor_double'; se esperaba: '$', 'expr', 'valor_entero'. <12,12> Error sintactico se encontro: '2.3'; se esperaba: 'valor_entero'.
+86 73
+Diff: <12,12> Error sintactico se encontro: '2.3'; se esperaba: '$', 'expr', 'valor_entero'. <12,12> Error sintactico se encontro: '2.3'; se esperaba: 'valor_entero'.
 
-resources/IO/Parser/parser-samples/out07.txt
 parser-samples/out07.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out08.txt
 parser-samples/out08.txt
-82 78
-Diff: <42,10> Error sintactico se encontro: 'valor_string'; se esperaba: 'valor_entero'. <42,10> Error sintactico se encontro: '"asdasd"'; se esperaba: 'valor_entero'.
+Son idénticos
 
-resources/IO/Parser/parser-samples/out09.txt
 parser-samples/out09.txt
 Son idénticos
 
-resources/IO/Parser/parser-samples/out10.txt
 parser-samples/out10.txt
-133 124
-Diff: <15,17> Error sintactico se encontro: 'identificador'; se esperaba: '$', '[', 'expr', 'valor_double', 'valor_entero', 'valor_string'. <15,17> Error sintactico se encontro: 'abcd'; se esperaba: '$', '[', 'expr', 'valor_double', 'valor_entero', 'valor_string'.
+Son idénticos
 
