@@ -17,8 +17,7 @@ parser-samples/out05.txt
 Son idénticos
 
 parser-samples/out06.txt
-86 73
-Diff: <12,12> Error sintactico se encontro: '2.3'; se esperaba: '$', 'expr', 'valor_entero'. <12,12> Error sintactico se encontro: '2.3'; se esperaba: 'valor_entero'.
+Son idénticos
 
 parser-samples/out07.txt
 Son idénticos

@@ -23,9 +23,9 @@ public class Utils {
     public final static int PARSER_CASE = 0x01;
 
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
-//        testCases(PARSER_CASE);
+        testCases(PARSER_CASE);
 //        tokenWordsGen();
-        crearConstructores();
+//        crearConstructores();
     }
 
     public static final String NOMBRE_METODO = "main";

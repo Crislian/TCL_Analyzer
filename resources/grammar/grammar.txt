@@ -114,7 +114,7 @@ INICIO_DEFAULT -> default {
 EXPRESION -> TERM AUX_EXPR | OP_UNARIO EXPRESION | ( EXPRESION ) AUX_EXPR
 AUX_EXPR -> OP_BINARIO EXPRESION | ε
 TERM -> $ identificador INDICE_TERM | AGRUP | VALOR
-INDICE_TERM -> ( VALOR_INDICE ) | ε
+INDICE_TERM -> ( VAL_INDICE ) | ε
 
 OP_UNARIO -> - | !
 OP_BINARIO -> > | < | >= | <= | eq | == | ne | != | && | || | + | - | * | / | % | **

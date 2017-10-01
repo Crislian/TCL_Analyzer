@@ -1,54 +1,12 @@
-#switch
+#expresiones
 
-switch $variable{
+[expr{2 * 3 **4 ** -3 * 5 / 3 + 45.4 - 4 - -5 +1 % 999999} ]; #operadores matematicos normales
+[expr{$a + $b + -$c/3}]; #inclusion de identificadores
+[expr{$a + [sum {$a} {$b} {expr{2 + 4}} {[array size arreglo ]}] } ]; #uso de funciones
+[expr{$a + $arreglo(2) + $arreglo(3)}]; #uso de arreglos
+[expr{"adasd" + 1 && "string" || "string" eq !-"ho" + 3 ** 89.000}]; #en el analisis sintactico no se realiza chequeo de tipos
+[expr{$a + (((((($arreglo(2))))))) + ($a)}]; #uso de parentesis
+[expr{-!------!-----!!!!!--!-!-!-!"dsafdsf"}]; #uso de operadores unarios
+[expr{puts}]; #ejemplo de error
 
-    case 1{
-
-    }
-    case 2{
-        puts 3;
-        puts 2;
-        gets stdin;
-        [sum];
-    }
-    case 999999{
-
-    }
-    default{
-
-    }
-}
-
-
-switch $variable{
-
-    case 1{
-
-    }
-    case 2{
-        puts 3;
-        puts 2;
-        gets stdin;
-        [sum];
-    }
-    case 999999{
-
-    }
-}
-
-
-switch $variable{
-
-    case "asdasd"{ #error solo se permiten valores enteros
-
-    }
-    case 2{
-        puts 3;
-        puts 2;
-        gets stdin;
-        [sum];
-    }
-    case 999999{
-
-    }
-}
+[expr{gets}]; #este error no se muestra
