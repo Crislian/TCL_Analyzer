@@ -1,0 +1,33 @@
+ejemplos-parser/out00.txt
+Son idénticos
+
+ejemplos-parser/out01.txt
+Son idénticos
+
+ejemplos-parser/out02.txt
+Son idénticos
+
+ejemplos-parser/out03.txt
+Son idénticos
+
+ejemplos-parser/out04.txt
+Son idénticos
+
+ejemplos-parser/out05.txt
+Son idénticos
+
+ejemplos-parser/out06.txt
+Son idénticos
+
+ejemplos-parser/out07.txt
+Son idénticos
+
+ejemplos-parser/out08.txt
+Son idénticos
+
+ejemplos-parser/out09.txt
+Son idénticos
+
+ejemplos-parser/out10.txt
+Son idénticos
+
