@@ -213,10 +213,11 @@ public class Parser {
         String getLexema() {
             return this.lexema;
         }
-        
+
         String getValor() {
-            if (valor != null)
+            if (valor != null) {
                 return this.valor;
+            }
             return this.lexema;
         }
     }
@@ -238,12 +239,14 @@ public class Parser {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
-        if (args.length == 0)
-            args = new String[]{"resources/IO/Parser/in.txt"};
-        if (args.length > 0)
+        if (args.length == 0) {
+            args = new String[]{"resources/IO/Parser/in.txt"};                  // QUITARLO ANTES DE SUBIR
+        }
+        if (args.length > 0) {
             br = new BufferedReader(new FileReader(args[0]));
-        else
+        } else {
             br = new BufferedReader(new InputStreamReader(System.in));
+        }
         tokenizer(br);
         parser();
     }
@@ -251,7 +254,7 @@ public class Parser {
     public static void parser() {
         error = false;
         Stack<String> stk = new Stack<>();
-        
+
         stk.push("EOF");
         stk.push("INICIO");
         while (!tokens.isEmpty() && !error) {
@@ -269,44 +272,49 @@ public class Parser {
                     stk.pop();
                     if (rule.size() != 1 || !rule.get(0).equals("ε")) {
                         ListIterator<String> it = rule.listIterator(rule.size());
-                        while (it.hasPrevious())
+                        while (it.hasPrevious()) {
                             stk.push(it.previous());
+                        }
                     }
                 }
             }
         }
         if (error) {
             Set<String> predError = new TreeSet<>();
-            if (!PREDICT.containsKey(stk.peek()))
+            if (!PREDICT.containsKey(stk.peek())) {
                 predError.add(stk.peek());
-            else {
+            } else {
                 List<Set<String>> pred = PREDICT.get(stk.peek());
-                for (Set<String> p : pred)
+                for (Set<String> p : pred) {
                     predError.addAll(p);
+                }
             }
             printError(predError, tokens.peek());
         } else {
             System.out.println("El analisis sintactico ha finalizado correctamente.");
         }
     }
-    
-    public static void printError(Set<String> predError, Token err){
+
+    public static void printError(Set<String> predError, Token err) {
         StringBuilder result = new StringBuilder("");
         result.append("<").append(err.getLinea()).append(",").append(err.getColumna());
         result.append("> Error sintactico se encontro: ").append("'").append(err.getValor()).append("'; se esperaba: ");
         Iterator<String> it = predError.iterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             result.append("'").append(it.next()).append("'");
-            if(it.hasNext())
+            if (it.hasNext()) {
                 result.append(", ");
-            else result.append(".");
+            } else {
+                result.append(".");
+            }
         }
         System.out.println(result.toString());
     }
 
     public static int predictIndex(String nt, String token) {
-        if (!PREDICT.containsKey(nt))
+        if (!PREDICT.containsKey(nt)) {
             return -1;
+        }
         List<Set<String>> pred = PREDICT.get(nt);
         for (int i = 0; i < pred.size(); i++) {
             if (pred.get(i).contains(token)) {
@@ -337,21 +345,25 @@ public class Parser {
                 }
                 int validacion = validarPrimerChar(caracter);
                 if (validacion == 2) {
-                    while (c + 1 < line.length() && line.charAt(++c) != '\"')
+                    while (c + 1 < line.length() && line.charAt(++c) != '\"') {
                         lexema += line.charAt(c);
+                    }
                     estadoLexema = FIN_STRING;
                 } else if (validacion == 0) {
                     while (c < line.length() && clasificar(caracter = line.charAt(c++), lexema)) {
                         lexema += caracter;
-                        if (estadoLexema == FIN_SYMBOL)
+                        if (estadoLexema == FIN_SYMBOL) {
                             break;
+                        }
                     }
-                    if (devolver == true)
+                    if (devolver == true) {
                         c -= 2;
-                    else
+                    } else {
                         c--;
-                } else
+                    }
+                } else {
                     lexema += caracter;
+                }
                 String valor = null;
                 switch (estadoLexema) {
                     case FIN_STRING:

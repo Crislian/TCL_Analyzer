@@ -1,6 +1,6 @@
-package tcl_analyzer;
+package utils;
 
-import grammar.Grammar;
+import utils.Grammar;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -9,6 +9,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,54 +23,33 @@ import java.util.Map;
 import java.util.Set;
 
 public class Utils {
-
-    public final static int LEXER_CASE = 0x00;
-    public final static int PARSER_CASE = 0x01;
-
+    
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
-        testCases(PARSER_CASE);
+        construirGramPred();        
+        testCases("Lexer");
+        testCases("Parser");
 //        tokenWordsGen();
-//        crearConstructores();
     }
 
-    public static final String NOMBRE_METODO = "main";
-
-    public static void testCases(int caso) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
-
-//         HUEVADAS! 
-//        T instancia = clase.newInstance();
-//        
-//        Method method = clase.getMethod("main", String[].class);
-//        System.out.println(method.getParameterTypes());
-//        for(Method m: clase.getMethods()){
-//            if (m.getName().equals(NOMBRE_METODO)) {
-//                for(Parameter param : m.getParameters()){
-//                    System.out.println(param.getParameterizedType());
-//                }
-//                m.invoke(instancia, args);
-//            }
-//        }
+    public static <T> void testCases(String c) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
+        System.out.println("\t \t Testing: " + c);
         
-        String folderName = null;
-        switch (caso) {
-            case LEXER_CASE:
-                folderName = "Lexer";
-                break;
-            case PARSER_CASE:
-                folderName = "Parser";
-                break;
-        }
+        Class<?> clase = Class.forName("tcl_analyzer." + c);
+        Method m = clase.getMethod("main", String[].class);
+        Object inst = clase.newInstance();
 
+        String folderName = c;
         String path = "resources/IO/" + folderName + "/";
 
         String[] folders = new File(path).list();
         Arrays.sort(folders);
-        PrintStream outputStream = new PrintStream("resources/test" + folderName + ".txt");
+        PrintStream outputStream = new PrintStream("resources/test/test" + folderName + ".txt");
         PrintStream standard = System.out;
         ByteArrayOutputStream stream;
         for (String folder : folders) {
-            if (folder.contains("."))
+            if (folder.contains(".")) {
                 continue;
+            }
             folder += "/";
             HashMap<String, String> inputs = new HashMap<>();
             String[] files = new File(path + folder).list();
@@ -75,16 +59,7 @@ public class Utils {
                     stream = new ByteArrayOutputStream();
                     System.setOut(new PrintStream(stream));
                     String[] args = {path + folder + file};
-                    switch (caso) {
-                        case LEXER_CASE:
-                            Lexer.main(args);
-                            break;
-                        case PARSER_CASE:
-                            Parser.main(args);
-                            break;
-                        default:
-                            throw new Exception("Pinche cabro mira las putas parametrizaciones!");
-                    }
+                    m.invoke(inst, (Object) args);
                     System.setOut(standard);
                     inputs.put(file, stream.toString());
                 } else if (file.contains("out")) {
@@ -112,7 +87,7 @@ public class Utils {
                             String outNext = outIt.next();
                             if (!impNext.equals(outNext)) {
                                 System.out.println(impNext.length() + " " + outNext.length());
-                                System.out.println("Diff: " + impNext + " " + outNext);
+                                System.out.println("Diff:\n" + impNext + "\n" + outNext);
                             }
                         }
                     }
@@ -120,26 +95,17 @@ public class Utils {
                 }
             }
         }
+        System.setOut(standard);
     }
 
     public static void utility() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String str;
-//        LinkedList ll = new LinkedList();
         while ((str = br.readLine()) != null && str.length() != 0) {
-            for (int i = 0; i < str.length(); i++) //                System.out.println("add(\'" + str.charAt(i) + "\');");
-            {
+            for (int i = 0; i < str.length(); i++) {
                 System.out.println(str.charAt(i) + " alpha " + Character.isAlphabetic(str.charAt(i)));
             }
         }
-//            }
-//        }
-//        for ( int i = 65 ; i <= 89 ; i++) {
-//            System.out.println("add(\"" + (char) i  + "\');");
-//        }
-//        for ( int i = 97 ; i <= 122 ; i++) {
-//            System.out.println("add(\"" + (char) i  + "\");");
-//        }
     }
 
     public static void tokenWordsGen() throws FileNotFoundException, IOException {
@@ -152,7 +118,6 @@ public class Utils {
                 ll.add("add(\"" + s + "\");");
             }
         }
-//        ll.clear();
         Object[] toArray = ll.toArray();
         Arrays.sort(toArray);
         for (Object s : toArray) {
@@ -160,15 +125,13 @@ public class Utils {
         }
     }
 
-    public static void crearConstructores() throws IOException {
+    public static void construirGramPred() throws IOException {
         Grammar.main(new String[]{});
         Map<String, List<List<String>>> gramatica = Grammar.getGramatica();
         Map<String, List<Set<String>>> predicciones = Grammar.getPredicciones();
 
-        System.setOut(new PrintStream("resources/GrammarPred.txt"));
-
         StringBuilder g = new StringBuilder();
-        g.append("final static Map<String, List<List<String>>> GRAMMAR = new HashMap<String, List<List<String>>>() {{");
+        g.append("    final static Map<String, List<List<String>>> GRAMMAR = new HashMap<String, List<List<String>>>() {{");
         for (String NT : gramatica.keySet()) {
             g.append("put(\"" + NT + "\", new ArrayList<List<String>>(){{");
             for (List<String> reglas : gramatica.get(NT)) {
@@ -181,9 +144,8 @@ public class Utils {
             g.append("}});");
         }
         g.append("}};");
-        System.out.println(g.toString());
         StringBuilder p = new StringBuilder();
-        p.append("final static Map<String, List<Set<String>>> PREDICT = new HashMap<String, List<Set<String>>>() {{");
+        p.append("    final static Map<String, List<Set<String>>> PREDICT = new HashMap<String, List<Set<String>>>() {{");
         for (String NT : predicciones.keySet()) {
             p.append("put(\"" + NT + "\", new ArrayList<Set<String>>(){{");
             for (Set<String> reglas : predicciones.get(NT)) {
@@ -196,6 +158,25 @@ public class Utils {
             p.append("}});");
         }
         p.append("}};");
-        System.out.print(p.toString());
+
+        String grammarString = "final static Map<String, List<List<String>>> GRAMMAR",
+                predString = "final static Map<String, List<Set<String>>> PREDICT";
+
+        Path path = Paths.get("src/tcl_analyzer", "Parser.java");
+        List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).contains(grammarString)) {
+                lines.set(i++, g.toString());
+                while (!lines.get(i).contains(predString)) {
+                    lines.remove(i);
+                }
+                lines.set(i++, p.toString());
+                while (!lines.get(i).equals("")) {
+                    lines.remove(i);
+                }
+                break;
+            }
+        }
+        Files.write(path, lines, StandardCharsets.UTF_8);
     }
 }
