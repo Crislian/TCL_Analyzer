@@ -1,0 +1,106 @@
+proc p{}{}
+proc p{}{}
+proc p{}{}
+proc p{}{}
+proc p{}{}
+proc p{}{}
+
+#ciclo for
+for {set identificador 1} {$identificador < 3} {incr identificador } {
+  continue;
+  break;
+  for {set identificador $identificador(1)} {2 > 3} {incr identificador } {
+        for {set identificador 1} {$identificador < 3} {incr identificador 1} {
+            for {set identificador $identificador} {2 >= 3} {incr identificador2  } {
+              continue;
+              break;
+              puts 2;
+              gets stdin;
+            }
+        }
+        for {set identificador expr{$var + 2}} {2 > 3} {incr i} {
+            if {2< 3} then {
+              #cuerpo
+            } elseif {1} then {
+
+            } else {
+                if{2 < 3}then{
+                    puts 2;
+                }
+                if{2**3}then{
+
+                }
+
+                if{2**3}then{
+                 puts 2;
+                }
+                elseif{1} then{
+                    if{2 < 3}then{
+                        puts 2;
+                    }
+                    if{2**3}then{
+                        switch $variable {
+                         case 1 {
+                            puts 2;
+                          }
+                         case 2 {
+                            puts 3;
+                          }
+                          default{
+                            #cuerpo
+                          }
+                        }
+                    }
+
+                    if{2**3}then{
+                     puts 2;
+                    }
+                    elseif{1} then{}
+                    else{}
+
+                    if{2**3}then{
+                     puts 2;
+                    }
+                    else{
+                        if{2**3}then{
+                                 puts 2;
+                                }
+                                elseif{1} then{}
+                    }
+                }
+                else{
+                    if{2**3}then{
+                             puts 2;
+                            }
+                    elseif{1} then{}
+                }
+
+                if{2**3}then{
+                 puts 2;
+                }
+                else{
+                    while{$a}{
+                        continue;
+                        break;
+                    }
+
+                    while{2 %3}{
+                        switch $variable {
+                         case 1 {
+                            puts 2;
+                          }
+                         case 2 {
+                            puts 3;
+                          }
+                          default{
+                            #cuerpo
+                          }
+                        }
+                    }
+                }
+            }
+        }
+  }
+}
+
+expr;

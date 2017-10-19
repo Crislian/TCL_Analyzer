@@ -1,0 +1,19 @@
+# Declaracion de cero o mas subrutinas
+proc sum {{a} {b} {c}}{
+  return [expr {$a + $b + $c}];
+}
+proc sum{}{}
+puts [sum {2} {2} {2}];
+set var 10;
+set var 20;
+set var "ASdasd";
+set var 2.3;
+set var $var;
+
+for{set i 1}{$i <= 10}{incr i}{
+  puts $i;
+}
+
+if{2**3}then{
+
+}

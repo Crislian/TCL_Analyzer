@@ -1,0 +1,26 @@
+switch $variable {
+ case 1 {
+    puts 2;
+  }
+ case 2 {
+    puts 3;
+  }
+  default{
+    #cuerpo
+  }
+}
+
+switch $variable {
+ case 1 {
+    puts 2;
+  }
+}
+
+switch $variable {
+ case 1 {
+    puts 2;
+  }
+  case 2{
+
+  }
+}

@@ -1,0 +1,29 @@
+proc identificador {{argumento1} {argumento2} {argumento3}} {
+    #cuerpo
+    return;
+    while{3 < 2}{
+        return;
+        break;
+        continue;
+    }
+    if{3 > 2} then{
+        return;
+    }
+    for {set identificador 1} {$identificador < 3} {incr identificador } {
+      continue;
+      break;
+      return;
+    }
+    switch $variable {
+     case 1 {
+        puts 2;
+      }
+     case 2 {
+        puts 3;
+        return;
+      }
+      default{
+        #cuerpo
+      }
+    }
+}

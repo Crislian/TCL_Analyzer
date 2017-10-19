@@ -1,6 +1,6 @@
 #expresiones
 
-[expr{2 * 3 **4 ** -3 * 5 / 3 + 45.4 - 4 - -5 +1)  % 999999} ]; #operadores matematicos normales
+[expr{2 * 3 **4 ** -3 * 5 / 3 + 45.4 - 4 - -5 +1 % 999999} ]; #operadores matematicos normales
 [expr{$a + $b + -$c/3}]; #inclusion de identificadores
 [expr{$a + [sum {$a} {$b} {expr{2 + 4}} {[array size arreglo ]}] } ]; #uso de funciones
 [expr{$a + $arreglo(2) + $arreglo(3)}]; #uso de arreglos

@@ -1,0 +1,10 @@
+gets stdin;
+puts [expr{2 + 2}];
+puts "valor";
+puts $a;
+puts [sum {2} {2} {2}];
+puts [gets stdin];
+puts 2;
+puts "string";
+puts $variable;
+puts 2.2;

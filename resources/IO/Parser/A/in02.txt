@@ -1,0 +1,9 @@
+set a 2;
+set a 3.2;
+set a "adbsd";
+set a [expr{2 + 2}];
+set arreglo(1) 2;
+set arreglo(2.3) 2;
+set arreglo("Awsd") 3.3;
+set arreglo([sum]) 2;
+set arreglo("abc") $a;

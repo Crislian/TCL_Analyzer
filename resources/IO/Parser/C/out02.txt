@@ -1,0 +1,1 @@
+<12,13> Error sintactico se encontro: 'identificador'; se esperaba: '[', 'valor_double', 'valor_entero', 'valor_string'.

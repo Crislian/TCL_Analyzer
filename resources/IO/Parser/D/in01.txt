@@ -1,0 +1,19 @@
+#ciclo for
+for {set identificador 1} {$identificador < 3} {incr identificador } {
+  continue;
+  break;
+  for {set identificador $identificador(1)} {2 > 3} {incr identificador } {
+        for {set identificador 1} {$identificador < 3} {incr identificador 1} {
+            for {set identificador $identificador} {2 >= 3} {incr identificador2  } {
+              continue;
+              break;
+              puts 2;
+              gets stdin;
+            }
+        }
+        for {set identificador expr{$var + 2}} {2 > 3} {incr } {
+
+        }
+  }
+}
+

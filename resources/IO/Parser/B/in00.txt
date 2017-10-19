@@ -1,0 +1,17 @@
+if{2 < 3}then{
+    puts 2;
+}
+if{2**3}then{
+
+}
+
+if{2**3}then{
+ puts 2;
+}
+else if{1} then{}
+else{}
+
+if{2**3}then{
+ puts 2;
+}
+else{}

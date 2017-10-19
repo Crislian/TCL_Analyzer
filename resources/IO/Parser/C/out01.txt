@@ -1,0 +1,1 @@
+<9,18> Error sintactico se encontro: 'bcd'; se esperaba: '$', '[', 'expr', 'valor_double', 'valor_entero', 'valor_string'.

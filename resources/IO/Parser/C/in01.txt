@@ -1,0 +1,9 @@
+#agrupaciones
+
+[expr{($a(2.3))--[sum{2}{3}{4}]}];
+[sum {2} {3} {4}];
+[sum {"asbddf"} {$_abc} {14.3} {3} {expr{2 + 2}}];
+[sum {$abc("Asda")}];
+[array exists arreglo];
+[array size arreglo];
+[sum {"asdasd"} {bcd}];

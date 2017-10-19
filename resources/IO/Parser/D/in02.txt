@@ -1,0 +1,136 @@
+proc identificador {{argumento1} {argumento2} {argumento3}} {
+    #cuerpo
+    return;
+    while{3 < 2}{
+        return;
+        break;
+        continue;
+    }
+    if {2< 3} then {
+      #cuerpo
+    } elseif {1} then {
+
+    } else {
+        if{2 < 3}then{
+            puts 2;
+        }
+        if{2**3}then{
+
+        }
+
+        if{2**3}then{
+         puts 2;
+        }
+        elseif{1} then{
+            if{2 < 3}then{
+                puts 2;
+            }
+            if{2**3}then{
+                switch $variable {
+                 case 1 {
+                    puts 2;
+                  }
+                 case 2 {
+                    puts 3;
+                  }
+                  default{
+                    #cuerpo
+                  }
+                }
+            }
+
+            if{2**3}then{
+             puts 2;
+             return;
+            }
+            elseif{1} then{}
+            else{}
+
+            if{2**3}then{
+             puts 2;
+            }
+            else{
+                if{2**3}then{
+                         puts 2;
+                        }
+                        elseif{1} then{}
+            }
+        }
+        else{
+            if{2**3}then{
+                     puts 2;
+                    }
+            elseif{1} then{}
+        }
+
+        if{2**3}then{
+         puts 2;
+        }
+        else{
+            while{$a}{
+                continue;
+                break;
+                return;
+            }
+
+            while{2 %3}{
+                switch $variable {
+                 case 1 {
+                    puts 2;
+                  }
+                 case 2 {
+                    puts 3;
+                  }
+                  default{
+                    #cuerpo
+                  }
+                }
+            }
+        }
+    }
+    for {set identificador 1} {$identificador < 3} {incr identificador } {
+      continue;
+      break;
+      return;
+      #ciclo for
+      for {set identificador 1} {$identificador < 3} {incr identificador } {
+        continue;
+        break;
+      }
+
+      for {set identificador 1} {$identificador < 3} {incr identificador 1} {
+
+      }
+
+      for {set identificador $identificador} {2 >= 3} {incr identificador2  } {
+        continue;
+        break;
+        puts 2;
+        gets stdin;
+        return;
+      }
+
+      for {set identificador $identificador(1)} {2 > 3} {incr identificador } {
+        return;
+        return 2;
+        return [expr{2 + 2}];
+        return [expr{($a("Asdsa"))--[sum{2}{3}{4}]}];
+      }
+
+      for {set identificador expr{$var + 2}} {2 > 3} {incr identificador } {
+        #cuerpo
+      }
+    }
+    switch $variable {
+     case 1 {
+        puts 2;
+      }
+     case 2 {
+        puts 3;
+        return;
+      }
+      default{
+        #cuerpo
+      }
+    }
+}

@@ -1,0 +1,10 @@
+proc sum{}{}
+
+[sum];
+
+[expr{2 + 2}];
+[gets stdin];
+[array size arreglo];
+[sum {2} {3} {4}];
+
+set a [expr{2 + 2}];

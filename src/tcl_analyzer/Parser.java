@@ -239,9 +239,9 @@ public class Parser {
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
         BufferedReader br;
-        if (args.length == 0) {
-            args = new String[]{"resources/IO/Parser/in.txt"};                  // QUITARLO ANTES DE SUBIR
-        }
+//        if (args.length == 0) {
+//            args = new String[]{"resources/IO/Parser/in.txt"};                  // QUITARLO ANTES DE SUBIR
+//        }
         if (args.length > 0) {
             br = new BufferedReader(new FileReader(args[0]));
         } else {

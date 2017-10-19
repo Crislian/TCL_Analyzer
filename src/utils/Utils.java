@@ -26,14 +26,13 @@ public class Utils {
     
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
         construirGramPred();        
-        testCases("Lexer");
         testCases("Parser");
+        testCases("Lexer");
 //        tokenWordsGen();
     }
 
-    public static <T> void testCases(String c) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
+    public static void testCases(String c) throws FileNotFoundException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, Exception {
         System.out.println("\t \t Testing: " + c);
-        
         Class<?> clase = Class.forName("tcl_analyzer." + c);
         Method m = clase.getMethod("main", String[].class);
         Object inst = clase.newInstance();

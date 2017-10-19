@@ -1,0 +1,16 @@
+gets stdin;
+puts [expr{($a(2.3))--[sum{2}{3}{4}]}];
+puts [expr{4**3*3**3**3**---2}];
+puts $identificador([expr{4**3*3**3**3**---2}]);
+
+puts;
+
+puts [expr{2 + 2}];
+puts [sum {2} {2} {2}];
+puts [gets stdin];
+puts 2;
+puts "string";
+puts $variable;
+puts 2.2;
+
+puts abc;

@@ -1,0 +1,1 @@
+<11,6> Error sintactico se encontro: 'if'; se esperaba: '{'.

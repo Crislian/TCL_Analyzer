@@ -1,3 +1,63 @@
+A/out00.txt
+Son idénticos
+
+A/out01.txt
+Son idénticos
+
+A/out02.txt
+Son idénticos
+
+A/out03.txt
+Son idénticos
+
+A/out04.txt
+Son idénticos
+
+B/out00.txt
+Son idénticos
+
+B/out01.txt
+Son idénticos
+
+B/out02.txt
+Son idénticos
+
+B/out03.txt
+Son idénticos
+
+B/out04.txt
+Son idénticos
+
+C/out00.txt
+Son idénticos
+
+C/out01.txt
+Son idénticos
+
+C/out02.txt
+Son idénticos
+
+C/out03.txt
+Son idénticos
+
+D/out00.txt
+Son idénticos
+
+D/out01.txt
+Son idénticos
+
+D/out02.txt
+Son idénticos
+
+D/out03.txt
+Son idénticos
+
+E/out00.txt
+Son idénticos
+
+E/out01.txt
+Son idénticos
+
 ejemplos-parser/out00.txt
 Son idénticos
 
@@ -29,5 +89,41 @@ ejemplos-parser/out09.txt
 Son idénticos
 
 ejemplos-parser/out10.txt
+Son idénticos
+
+ejemplos-parser/out11.txt
+Son idénticos
+
+parser-samples/out00.txt
+Son idénticos
+
+parser-samples/out01.txt
+Son idénticos
+
+parser-samples/out02.txt
+Son idénticos
+
+parser-samples/out03.txt
+Son idénticos
+
+parser-samples/out04.txt
+Son idénticos
+
+parser-samples/out05.txt
+Son idénticos
+
+parser-samples/out06.txt
+Son idénticos
+
+parser-samples/out07.txt
+Son idénticos
+
+parser-samples/out08.txt
+Son idénticos
+
+parser-samples/out09.txt
+Son idénticos
+
+parser-samples/out10.txt
 Son idénticos
 

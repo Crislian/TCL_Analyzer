@@ -1,0 +1,22 @@
+proc sum{}{}
+
+
+set var 10;
+set var 20;
+set var "ASdasd";
+set var 2.3;
+set var $var;
+set var $var3;
+set var 70;
+set var 80;
+set var 90;
+set var 90;
+puts $var;
+puts $var;
+puts $var;
+puts 2.3;
+puts 50;
+puts "abcde";
+
+
+

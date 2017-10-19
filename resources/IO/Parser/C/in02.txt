@@ -1,0 +1,12 @@
+#sets
+
+set variable "asdasdasdasdjaldsfjds_ASd12431407019874";
+set variable $identificador;
+set variable $identificador("asdas");
+set variable $identificador(2);
+set variable $identificador([expr{2 + 2}]);
+set variable3 [expr{4**3*3**3**3**---2}];
+set arreglo( [expr{($a(2.3))--[sum{2}{3}{4}]}] ) 1;
+set arreglo("string") $identificador;
+set arreglo([array size arreglo]) "string";
+set arreglo(identificador) "string";

@@ -1,0 +1,1 @@
+<106,1> Error sintactico se encontro: 'expr'; se esperaba: 'EOF', '[', 'for', 'gets', 'if', 'puts', 'set', 'switch', 'while'.

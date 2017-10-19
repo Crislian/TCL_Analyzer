@@ -1,0 +1,1 @@
+<6,5> Error sintactico se encontro: ';'; se esperaba: '$', '[', 'valor_double', 'valor_entero', 'valor_string'.
